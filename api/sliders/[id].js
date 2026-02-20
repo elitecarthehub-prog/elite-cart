@@ -3,6 +3,13 @@ import { MongoClient, ObjectId } from "mongodb";
 const client = new MongoClient(process.env.MONGO_URI);
 
 export default async function handler(req, res) {
+res.setHeader("Access-Control-Allow-Origin", "https://elitecart.pro");
+res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+if (req.method === "OPTIONS") {
+  return res.status(200).end();
+}
   try {
     await client.connect();
     const db = client.db("elitecart");
@@ -27,4 +34,5 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
+
 }
